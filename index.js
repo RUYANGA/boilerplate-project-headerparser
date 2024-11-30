@@ -24,6 +24,23 @@ app.get('/api/hello', function (req, res) {
   res.json({ greeting: 'hello API' });
 });
 
+
+app.set('trust proxy', true); // For accurate IP behind proxies like Heroku
+
+app.get('/api/whoami', (req, res) => {
+  const ipaddress = req.ip;
+  const language = req.headers['accept-language'];
+  const software = req.headers['user-agent'];
+
+  res.json({
+    ipaddress: ipaddress || "IP not available",
+    language: language || "Language not available",
+    software: software || "User-Agent not available",
+  });
+});
+
+
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
